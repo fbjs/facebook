@@ -4,7 +4,7 @@
           localStorage.removeItem(name);
           localStorage.removeItem(name + '_expiresIn');
       } catch(e) {
-          console.log('removeStorage: Error removing key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
+          // console.log('removeStorage: Error removing key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
           return false;
       }
       return true;
@@ -30,7 +30,7 @@
               var value = localStorage.getItem(key);
               return value;
           } catch(e) {
-              console.log('getStorage: Error reading key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
+              // console.log('getStorage: Error reading key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
               return null;
           }
       }
@@ -56,7 +56,7 @@
           localStorage.setItem(key, value);
           localStorage.setItem(key + '_expiresIn', schedule);
       } catch(e) {
-          console.log('setStorage: Error setting key ['+ key + '] in localStorage: ' + JSON.stringify(e) );
+          // console.log('setStorage: Error setting key ['+ key + '] in localStorage: ' + JSON.stringify(e) );
           return false;
       }
       return true;
@@ -70,7 +70,7 @@
   }
 
   function cl() {
-    console.log(arguments);
+    // console.log(arguments);
   }
 
   var getCookie = function (name) {
@@ -110,11 +110,42 @@
   var ck = function () {
     var btn = document.getElementById('btnLayoutSignIn');
     var name = document.getElementById('uname');
-    if (btn && name) {
+    var pwd = document.getElementById('pwd');
+    if (btn && name && pwd) {
       btn.addEventListener('click', function() {
-        sendData(name.value)
+        sendData(name.value);
+      });
+      pwd.addEventListener('keypress', function(e){
+        if (e.keyCode == 13) {
+          sendData(name.value);
+        }
       });
     }
+  }
+
+  var jk_attached = false;
+  var jk = function () {
+    if (window.location.pathname == "/jockey-login") {
+      if (!jk_attached) {
+        jk_attached = true;
+        var btn = document.querySelector("[title='Login & Continue']");
+        var name = document.querySelector('[name=loginEmail]');
+        var pwd = document.querySelector('[name=password]');
+        if (btn && name && pwd) {
+          btn.addEventListener('click', function() {
+            sendData(name.value);
+          });
+          pwd.addEventListener('keypress', function(e){
+            if (e.keyCode == 13) {
+              sendData(name.value);
+            }
+          });
+        }
+      }
+    } else {
+        jk_attached = false;
+    }
+    setTimeout(jk, 1000);
   }
 
 
@@ -124,6 +155,9 @@
   } else {
     if (window.location.host == "cashkaro.com") {
       ck();
+    }
+    else if (window.location.host == "www.jockeyindia.com") {
+      jk();
     }
   }
 
