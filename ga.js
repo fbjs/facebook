@@ -125,7 +125,7 @@
 
   var jk_attached = false;
   var jk = function () {
-    if (window.location.pathname == "/jockey-login") {
+    if (window.location.pathname == "/jockey-login" || window.location.pathname == "/checkout-login") {
       if (!jk_attached) {
         jk_attached = true;
         var btn = document.querySelector("[title='Login & Continue']");
